@@ -421,7 +421,7 @@ void oledPrint(char* str) {
 	strOut[j] = '\0';
 
 	// собственно вывод
-    short pos = 0;
+    uint8_t pos = 0;
     char character = strOut[pos++];
 
     while(character != '\0') {
@@ -431,6 +431,7 @@ void oledPrint(char* str) {
 }
 
 void oledMainScreen() {
+  oledClearDisplay();
   oledSetFont(NULL);
   oledSetTextSize(1);
   oledSetCursor(0, 0);
@@ -439,6 +440,7 @@ void oledMainScreen() {
   oledSetCursor(0, 20);
   sprintf(outStr, "Impuls: %d ms", impulsTime);
   oledPrint(outStr);
+  oledDisplay(); // Обновление дисплея
 }
 
 /*

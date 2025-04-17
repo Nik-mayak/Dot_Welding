@@ -70,17 +70,41 @@ void keyClickOrLong() {
 
 void controlImpulsTime() {
   if(encNewData) {
+    //Serial.print("encData = "); Serial.println (encData); // Отладочный вывод
     uint16_t oldImpulsTime = impulsTime; // Сохраняем старое значение времени импульса      
-    if (impulsTime > 10 && impulsTime < 1000) { // Проверяем диапазон значений
-      impulsTime += encData * 10; // Увеличиваем или уменьшаем время импульса
-    } else if (impulsTime <= 10 && encData < 0) {
-      impulsTime = 10; // Минимальное значение
-    } else if (impulsTime >= 1000 && encData > 0) {
-      impulsTime = 1000; // Максимальное значение
+    if ((encData > 0 && impulsTime < 1000) || (encData < 0 && impulsTime >= 20)) { // Если вращение по часовой стрелке
+      impulsTime += encData * 10; // Увеличиваем время импульса
     }
     if (oldImpulsTime != impulsTime) { // Если значение изменилось
       newData = true; // Устанавливаем флаг новых данных
-      encNewData = false; // Сбрасываем флаг новых данных энкодера
+      //Serial.print("impulsTime = "); Serial.println (impulsTime); // Отладочный выво
     }
+    encNewData = false; // Сбрасываем флаг новых данных
   }
+}
+
+void impulsGo () {
+  digitalWrite(LED_PIN, HIGH); // Устанавливаем HIGH на пине KEY
+  delay(impulsTime); // Задержка на время импульса
+  digitalWrite(LED_PIN, LOW); // Устанавливаем LOW на пине KEY
+}
+
+// Функция для запуска таймера:
+void timer_start(Timer *timer, uint32_t delay_ms) {
+  timer->start_time = millis(); // Получаем текущее время (F=27MHz = 108/4)
+  timer->delay = delay_ms; //
+  timer->active = true;
+}
+
+// Функция для проверки таймера:
+uint8_t timer_state(Timer *timer) {
+  if (!timer->active) {
+      return NO_ACTIVE; // Таймер не запущен
+  }
+  uint64_t current_time = millis();
+  if ((current_time - timer->start_time) >= timer->delay) {
+      timer->active = false; // Таймер не активен
+      return COMPLETED; // Таймер сработал
+  }
+  return RUNNING; // Таймер ещё работает
 }

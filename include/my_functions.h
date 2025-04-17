@@ -14,5 +14,8 @@ void encFlag();
 bool keyReady();
 void keyClickOrLong();
 void controlImpulsTime();
+void impulsGo ();
+void    timer_start(Timer *timer, uint32_t delay_ms);
+uint8_t timer_state(Timer *timer);
 
 #endif

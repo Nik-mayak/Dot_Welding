@@ -15,6 +15,6 @@ volatile    uint8_t     encPrevState = 0;
             uint32_t    timeStartKey = 0;
             uint32_t    debounceTimeMs = 0;
 
-            bool        isReady = false; // Признак готовности к работе
-            uint16_t    impulsTime = 0; // Время импульса в мс
+            bool        isReady = true; // Признак готовности к работе
+            uint16_t    impulsTime = 100; // Время импульса в мс
             bool        newData = false; // новые данные

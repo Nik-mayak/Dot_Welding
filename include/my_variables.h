@@ -10,6 +10,8 @@
 #define SCL_PIN     A5
 #define SDA_PIN     A4
 
+#define LED_PIN     13       // пин светодиода
+
 #define DEBOUNCE_DELAY_MS  50
 #define KEY_LONG_DELAY_MS 800
 
@@ -29,5 +31,20 @@ extern          uint8_t previousKeyState;
 extern          bool    isReady; // Признак готовности к работе
 extern          uint16_t impulsTime; // Время импульса в мс
 extern          bool    newData; // новые данные
+
+typedef struct {
+    uint32_t start_time;
+    uint32_t delay;
+    bool active;
+} Timer;
+
+typedef enum {
+    COMPLETED,  // был запущен и сработал
+    RUNNING,    // запушен, но еще работает
+    NO_ACTIVE   // не запущен
+} TIMER;
+
+extern Timer timerImpuls;
+extern Timer timerNoReady;
 
 #endif
